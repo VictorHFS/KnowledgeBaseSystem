@@ -14,8 +14,9 @@ export class EntityController<T extends Entity> {
             var data = this._service.find(Number(req.params["id"]));
             res.json(data);
         } catch (e) {
-            res.statusCode = 204; // content not found
-            res.send(e);
+            res
+                .status(204)// content not found
+                .send(e);
         }
     }
 
@@ -27,8 +28,9 @@ export class EntityController<T extends Entity> {
             var data = this._service.create(req.body);
             res.json(data);
         } catch (e) {
-            res.statusCode = 204; // content not found
-            res.send(e);
+            res
+                .status(204)// content not found
+                .send(e);
         }
     }
 

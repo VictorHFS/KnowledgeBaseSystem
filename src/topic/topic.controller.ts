@@ -24,8 +24,8 @@ export class TopicController extends EntityController<Topic> {
                     .send({ message: e.message });
             } else {
 
-                res.statusCode = 204; // content not found
-                res.send(e);
+                res
+                    .sendStatus(204);// content not found
             }
         }
     }
