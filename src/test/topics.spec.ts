@@ -82,7 +82,6 @@ fdescribe("GET /", () => {
             .send(payload)
             .expect(400)
             .end(function (err, res) {
-                console.log('body', res.body);
                 expect(res.body.message).toEqual('Parent Topic 150 don\'t exists');
                 done();
             });
