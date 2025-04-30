@@ -91,8 +91,7 @@ export class TopicService extends EntityService<Topic> {
             throw new Error('Entity not found (' + Entity.id + ')');
         }
 
-        const index = this.Entitys.findIndex(u => Entity.id === u.id);
-        if (index < 0) {
+        if (!this.exists(Entity.id)) {
             throw new Error('Entity not found (' + Entity.id + ')');
         }
 
@@ -100,10 +99,12 @@ export class TopicService extends EntityService<Topic> {
             throw new TopicError(400, 'Parent Topic ' + Entity.parentTopicId + ' for this records has a conflicting error.')
         }
 
+        const _entity = this.find(Entity.id);
+
         Entity = {
             ...Entity,
-            createdAt: this.Entitys[index].createdAt,
-            version: this.Entitys[index].version + 1,
+            createdAt: _entity.createdAt,
+            version: _entity.version + 1,
             updatedAt: new Date()
         }
         this.Entitys.push(Entity);
