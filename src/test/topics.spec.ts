@@ -17,6 +17,44 @@ fdescribe("GET /", () => {
             .expect(200);
     });
 
+    it("should update and retrieve topic version 2", (done) => {
+        const payload: Topic = {
+            id: 1,
+            name: "Test Main Topic",
+            content: "lorem ipsum",
+        };
+        return request(app)
+            .put("/topics")
+            .set({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            .send(payload)
+            .expect(201)
+            .end(function (err, res) {
+                expect(res.body.id).not.toBeNull();
+                expect(res.body.name).toEqual("Test Main Topic");
+                expect(res.body.content).toEqual("lorem ipsum");
+                expect(res.body.parentTopicId).toBeUndefined();
+                expect(res.body.createdAt).not.toBeUndefined();
+                expect(res.body.updatedAt).not.toBeUndefined();
+                expect(res.body.version).toEqual(2);
+
+                request(app)
+                    .get("/topics/1")
+                    .end(function (err, res) {
+                        expect(res.body.id).toEqual(1);
+                        expect(res.body.name).toEqual("Test Main Topic");
+                        expect(res.body.content).toEqual("lorem ipsum");
+                        expect(res.body.createdAt).not.toBeNull();
+                        expect(res.body.updatedAt).not.toBeNull();
+                        expect(res.body.version).toEqual(2);
+                        done();
+                    })
+                    .expect(200);
+            });
+    });
+
     it("should save topic without parent", (done) => {
         const payload: Topic = {
             name: "Test Topic",

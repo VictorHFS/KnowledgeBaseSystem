@@ -113,12 +113,11 @@ export class TopicService extends EntityService<Topic> {
     override find(id: number): Topic { //find last version
         var topics = this.Entitys
             .filter(e => e.id === id)
-            .sort((a, b) => a.updatedAt > b.updatedAt ? 1 : 0);
+            .sort((a, b) => a.updatedAt.getTime() < b.updatedAt.getTime() ? 1 : -1);
 
         if (topics.length === 0) {
             throw new Error('Entity not found (' + id + ')');
         }
-
         return topics[0];
     }
 
