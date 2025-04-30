@@ -29,4 +29,26 @@ export class TopicController extends EntityController<Topic> {
             }
         }
     }
+
+    async put(req: Request, res: Response): Promise<void> {
+        try {
+            if (!req.body) {
+                throw new Error('Body is empty');
+            }
+
+            var data = this._service.update(req.body);
+            res.json(data);
+        } catch (e) {
+            if (e.code) {
+
+                res
+                    .status(e.code)
+                    .send({ message: e.message });
+            } else {
+
+                res
+                    .sendStatus(204);// content not found
+            }
+        }
+    }
 }

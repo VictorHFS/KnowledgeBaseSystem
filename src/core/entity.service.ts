@@ -2,7 +2,7 @@ import { Entity } from "./entity";
 
 
 export class EntityService<T extends Entity> {
-    Entitys: T[] = [];
+    protected Entitys: T[] = [];
     sequence: number = 0;
 
     find(id: number): T {
@@ -40,10 +40,9 @@ export class EntityService<T extends Entity> {
     }
 
     delete(id: number) {
-        var index = this.Entitys.findIndex(u => u.id === id);
-        if (index < 0) {
+        if (!this.exists(id)) {
             throw new Error('Entity not found (' + id + ')');
         }
-        this.Entitys = [...this.Entitys.slice(0, index), ...this.Entitys.slice(index + 1)];
+        this.Entitys = this.Entitys.filter(u => u.id === id);
     }
 }

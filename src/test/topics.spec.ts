@@ -67,6 +67,101 @@ fdescribe("GET /", () => {
             });
     });
 
+    it("should update topic without parent", (done) => {
+        const payload: Topic = {
+            id: 1,
+            name: "Test Main Topic",
+            content: "lorem ipsum",
+        };
+        return request(app)
+            .put("/topics")
+            .set({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            .send(payload)
+            .expect(201)
+            .end(function (err, res) {
+                expect(res.body.id).not.toBeNull();
+                expect(res.body.name).toEqual("Test Main Topic");
+                expect(res.body.content).toEqual("lorem ipsum");
+                expect(res.body.parentTopicId).toBeUndefined();
+                expect(res.body.createdAt).not.toBeUndefined();
+                expect(res.body.updatedAt).not.toBeUndefined();
+                expect(res.body.version).toEqual(2);
+                done();
+            });
+    });
+
+    it("should update topic with parent", (done) => {
+        const payload: Topic = {
+            id: 2,
+            name: "Test Secondary Topic",
+            content: "lorem ipsum",
+            parentTopicId: 1
+        };
+        return request(app)
+            .put("/topics")
+            .set({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            .send(payload)
+            .expect(201)
+            .end(function (err, res) {
+                expect(res.body.id).not.toBeNull();
+                expect(res.body.name).toEqual("Test Secondary Topic");
+                expect(res.body.content).toEqual("lorem ipsum");
+                expect(res.body.parentTopicId).toEqual(1);
+                expect(res.body.createdAt).not.toBeUndefined();
+                expect(res.body.updatedAt).not.toBeUndefined();
+                expect(res.body.version).toEqual(2);
+                done();
+            });
+    });
+
+    it("should not update topic with self parenting", (done) => {
+        const payload: Topic = {
+            id: 1,
+            name: "Test Main Topic",
+            content: "lorem ipsum",
+            parentTopicId: 1
+        };
+        return request(app)
+            .put("/topics")
+            .set({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            .send(payload)
+            .expect(400)
+            .end(function (err, res) {
+                expect(res.body.message).toEqual('Parent Topic 1 for this records has a conflicting error.');
+                done();
+            });
+    });
+
+    it("should not update topic with looping parenting", (done) => {
+        const payload: Topic = {
+            id: 1,
+            name: "Test Main Topic",
+            content: "lorem ipsum",
+            parentTopicId: 2
+        };
+        return request(app)
+            .put("/topics")
+            .set({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            .send(payload)
+            .expect(400)
+            .end(function (err, res) {
+                expect(res.body.message).toEqual('Parent Topic 2 for this records has a conflicting error.');
+                done();
+            });
+    });
+
     it("should not save topic with parent that don\'t exists", (done) => {
         const payload: Topic = {
             name: "Test Topic",
