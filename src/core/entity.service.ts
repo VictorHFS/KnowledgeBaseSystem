@@ -14,6 +14,11 @@ export class EntityService<T extends Entity> {
         return response;
     }
 
+    exists(id: number): boolean {
+        var response = this.Entitys.find(e => e.id === id);
+        return !!response;
+    }
+
     create(Entity: T): T {
         Entity.id = ++this.sequence;
         this.Entitys.push(Entity);

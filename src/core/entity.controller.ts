@@ -2,11 +2,10 @@ import { Entity } from "./entity";
 import { Request, Response } from "express";
 import { EntityService } from "./entity.service";
 import { router } from "../routes";
-import { log } from "console";
 
 export class EntityController<T extends Entity> {
 
-    constructor(public path: string, private _service: EntityService<T>) {
+    constructor(public path: string, protected _service: EntityService<T>) {
         initializeRoute(this);
     }
 

@@ -53,7 +53,7 @@ describe("GET /", () => {
             .get("/users/10")
             .expect(204)
             .end(function (err, res) {
-                expect(err).toEqual('Entity not found (10)');
+                expect(err).toBeNull();
                 done();
             });
     });
