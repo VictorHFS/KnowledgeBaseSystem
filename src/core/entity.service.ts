@@ -1,0 +1,44 @@
+import { Entity } from "./entity";
+
+
+export class EntityService<T extends Entity> {
+    Entitys: T[] = [];
+    sequence: number = 0;
+
+    find(id: number): T {
+        var response = this.Entitys.find(e => e.id === id);
+        if (!response) {
+            throw new Error('Entity not found (' + id + ')');
+        }
+
+        return response;
+    }
+
+    create(Entity: T): T {
+        Entity.id = ++this.sequence;
+        this.Entitys.push(Entity);
+        return Entity;
+    }
+
+    update(Entity: T): T {
+        if (Entity.id === null || Entity.id <= 0) {
+            throw new Error('Entity not found (' + Entity.id + ')');
+        }
+
+        const index = this.Entitys.findIndex(u => Entity.id === u.id);
+        if (index < 0) {
+            throw new Error('Entity not found (' + Entity.id + ')');
+        }
+
+        this.Entitys[index] = Entity;
+        return Entity;
+    }
+
+    delete(id: number) {
+        var index = this.Entitys.findIndex(u => u.id === id);
+        if (index < 0) {
+            throw new Error('Entity not found (' + id + ')');
+        }
+        this.Entitys = [...this.Entitys.slice(0, index), ...this.Entitys.slice(index + 1)];
+    }
+}
