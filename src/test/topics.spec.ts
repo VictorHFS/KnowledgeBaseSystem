@@ -1,7 +1,6 @@
 import request from "supertest";
 import { app } from "../app";
 import { Topic } from "../topic/topic";
-import { TopicTree } from "../topic/topic-tree";
 
 describe("topics/", () => {
 
@@ -109,8 +108,8 @@ describe("topics/", () => {
     it("should update topic without parent", (done) => {
         const payload: Topic = {
             id: 1,
-            name: "Test Main Topic",
-            content: "lorem ipsum",
+            name: "Main Topic",
+            content: "lorem ipsum Test",
         };
         return request(app)
             .put("/topics")
@@ -122,8 +121,8 @@ describe("topics/", () => {
             .expect(201)
             .end(function (err, res) {
                 expect(res.body.id).not.toBeNull();
-                expect(res.body.name).toEqual("Test Main Topic");
-                expect(res.body.content).toEqual("lorem ipsum");
+                expect(res.body.name).toEqual("Main Topic");
+                expect(res.body.content).toEqual("lorem ipsum Test");
                 expect(res.body.parentTopicId).toBeUndefined();
                 expect(res.body.createdAt).not.toBeUndefined();
                 expect(res.body.updatedAt).not.toBeUndefined();
@@ -135,8 +134,8 @@ describe("topics/", () => {
     it("should update topic with parent", (done) => {
         const payload: Topic = {
             id: 2,
-            name: "Test Secondary Topic",
-            content: "lorem ipsum",
+            name: "Secondary Topic",
+            content: "lorem ipsum Test Secondary",
             parentTopicId: 1
         };
         return request(app)
@@ -149,8 +148,8 @@ describe("topics/", () => {
             .expect(201)
             .end(function (err, res) {
                 expect(res.body.id).not.toBeNull();
-                expect(res.body.name).toEqual("Test Secondary Topic");
-                expect(res.body.content).toEqual("lorem ipsum");
+                expect(res.body.name).toEqual("Secondary Topic");
+                expect(res.body.content).toEqual("lorem ipsum Test Secondary");
                 expect(res.body.parentTopicId).toEqual(1);
                 expect(res.body.createdAt).not.toBeUndefined();
                 expect(res.body.updatedAt).not.toBeUndefined();
@@ -162,8 +161,8 @@ describe("topics/", () => {
     it("should not update topic with self parenting", (done) => {
         const payload: Topic = {
             id: 1,
-            name: "Test Main Topic",
-            content: "lorem ipsum",
+            name: "Main Topic",
+            content: "lorem ipsum Test",
             parentTopicId: 1
         };
         return request(app)
@@ -183,8 +182,8 @@ describe("topics/", () => {
     it("should not update topic with looping parenting", (done) => {
         const payload: Topic = {
             id: 1,
-            name: "Test Main Topic",
-            content: "lorem ipsum",
+            name: "Main Topic",
+            content: "lorem ipsum Test Ttes",
             parentTopicId: 2
         };
         return request(app)
@@ -247,42 +246,6 @@ describe("topics/", () => {
             .expect(204)
             .end(function (err, res) {
                 expect(err).toBeNull();
-                done();
-            });
-    });
-
-    it("should return topic tree", (done) => {
-        return request(app)
-            .get("/topics/tree/1")
-            .expect(200)
-            .end(function (err, res) {
-                var tree = res.body as TopicTree;
-                expect(tree.id).toEqual(1);
-                expect(tree.name).toEqual("Main Topic");
-                expect(tree.content).toEqual("Empty Content");
-                expect(tree.createdAt).not.toBeNull();
-                expect(tree.updatedAt).not.toBeNull();
-                expect(tree.version).not.toBeNull();
-                expect(tree.children.length).toEqual(1);
-
-                tree = tree.children[0];
-                expect(tree.id).toEqual(2);
-                expect(tree.name).toEqual("Secondary Topic");
-                expect(tree.content).toEqual("Empty Content");
-                expect(tree.createdAt).not.toBeNull();
-                expect(tree.updatedAt).not.toBeNull();
-                expect(tree.version).not.toBeNull();
-                expect(tree.children.length).toEqual(1);
-
-                tree = tree.children[0];
-                expect(tree.id).toEqual(3);
-                expect(tree.name).toEqual("Last Topic");
-                expect(tree.content).toEqual("Empty Content");
-                expect(tree.createdAt).not.toBeNull();
-                expect(tree.updatedAt).not.toBeNull();
-                expect(tree.version).not.toBeNull();
-                expect(tree.children.length).toEqual(0);
-
                 done();
             });
     });

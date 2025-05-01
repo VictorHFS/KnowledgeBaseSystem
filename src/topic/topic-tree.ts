@@ -8,6 +8,7 @@ export interface TopicTree {
     updatedAt: Date;
     version: number;
     children: TopicTree[];
+    parentTopicId?: number;
 }
 
 export function TopicToTree(topic: Topic): TopicTree {
@@ -19,5 +20,6 @@ export function TopicToTree(topic: Topic): TopicTree {
         updatedAt: topic.updatedAt,
         version: topic.version,
         children: [],
+        parentTopicId: topic.parentTopicId
     };
 }

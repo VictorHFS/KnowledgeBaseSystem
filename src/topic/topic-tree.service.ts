@@ -14,6 +14,31 @@ export class TopicTreeService {
         return this._buildTree(topic, topics);
     }
 
+    findWholeTree(topic: Topic): TopicTree { //find last version
+
+        var root = topic;
+        var topics = this._topicService.findAllLastVersion();
+
+        if (topic.parentTopicId) {
+            root = this._findTreeRoot(root, topics);
+        }
+
+        return this._buildTree(root, topics);
+    }
+
+    private _findTreeRoot(from: Topic, topics: Topic[]): Topic {
+        var root = from;
+        while (true) {
+            var curr: Topic = topics.find(t => t.id === root.parentTopicId);
+            if (!curr) {
+                break;
+            } else {
+                root = curr;
+            }
+        }
+        return root;
+    }
+
     private _buildTree(mainTopic: Topic, topics: Topic[]): TopicTree {
         var tree = TopicToTree(mainTopic);
 
