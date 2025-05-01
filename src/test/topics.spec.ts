@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../app";
 import { Topic } from "../topic/topic";
 
-fdescribe("GET /", () => {
+describe("GET /", () => {
 
     it("should return topic", () => {
         return request(app)

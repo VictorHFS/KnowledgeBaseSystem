@@ -8,47 +8,4 @@ export class TopicController extends EntityController<Topic> {
     constructor(_service: EntityService<Topic>) {
         super("/topics", _service);
     }
-
-    override async post(req: Request, res: Response): Promise<void> {
-        try {
-            if (!req.body) {
-                throw new Error('Body is empty');
-            }
-            var data = this._service.create(req.body);
-            res.json(data);
-        } catch (e) {
-            if (e.code) {
-
-                res
-                    .status(e.code)
-                    .send({ message: e.message });
-            } else {
-
-                res
-                    .sendStatus(204);// content not found
-            }
-        }
-    }
-
-    async put(req: Request, res: Response): Promise<void> {
-        try {
-            if (!req.body) {
-                throw new Error('Body is empty');
-            }
-
-            var data = this._service.update(req.body);
-            res.json(data);
-        } catch (e) {
-            if (e.code) {
-
-                res
-                    .status(e.code)
-                    .send({ message: e.message });
-            } else {
-
-                res
-                    .sendStatus(204);// content not found
-            }
-        }
-    }
 }

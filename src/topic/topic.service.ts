@@ -1,6 +1,6 @@
 import { EntityService } from "../core/entity.service";
 import { Topic } from "./topic";
-import { TopicError } from "./topic.error";
+import { StatusError } from "./status.error";
 
 export class TopicService extends EntityService<Topic> {
 
@@ -28,7 +28,7 @@ export class TopicService extends EntityService<Topic> {
         Entity.version = 1;
 
         if (Entity.parentTopicId && !this.exists(Entity.parentTopicId)) {
-            throw new TopicError(400, 'Parent Topic ' + Entity.parentTopicId + ' don\'t exists')
+            throw new StatusError(400, 'Parent Topic ' + Entity.parentTopicId + ' don\'t exists')
         }
         return super.create(Entity);
     }
@@ -96,7 +96,7 @@ export class TopicService extends EntityService<Topic> {
         }
 
         if (Entity.id == Entity.parentTopicId || this._checkParentingLoop(Entity)) {
-            throw new TopicError(400, 'Parent Topic ' + Entity.parentTopicId + ' for this records has a conflicting error.')
+            throw new StatusError(400, 'Parent Topic ' + Entity.parentTopicId + ' for this records has a conflicting error.')
         }
 
         const _entity = this.find(Entity.id);

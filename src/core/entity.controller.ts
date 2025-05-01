@@ -14,9 +14,16 @@ export class EntityController<T extends Entity> {
             var data = this._service.find(Number(req.params["id"]));
             res.json(data);
         } catch (e) {
-            res
-                .status(204)// content not found
-                .send(e);
+            if (e.code) {
+
+                res
+                    .status(e.code)
+                    .send({ message: e.message });
+            } else {
+
+                res
+                    .sendStatus(204);// content not found
+            }
         }
     }
 
@@ -28,9 +35,16 @@ export class EntityController<T extends Entity> {
             var data = this._service.create(req.body);
             res.json(data);
         } catch (e) {
-            res
-                .status(204)// content not found
-                .send(e);
+            if (e.code) {
+
+                res
+                    .status(e.code)
+                    .send({ message: e.message });
+            } else {
+
+                res
+                    .sendStatus(204);// content not found
+            }
         }
     }
 
@@ -43,8 +57,16 @@ export class EntityController<T extends Entity> {
             var data = this._service.update(req.body);
             res.json(data);
         } catch (e) {
-            res
-                .sendStatus(204); // no content
+            if (e.code) {
+
+                res
+                    .status(e.code)
+                    .send({ message: e.message });
+            } else {
+
+                res
+                    .sendStatus(204);// content not found
+            }
         }
     }
 
@@ -53,8 +75,16 @@ export class EntityController<T extends Entity> {
             this._service.delete(Number(req.params['id']));
             res.sendStatus(202);
         } catch (e) {
-            res
-                .sendStatus(204); // no content
+            if (e.code) {
+
+                res
+                    .status(e.code)
+                    .send({ message: e.message });
+            } else {
+
+                res
+                    .sendStatus(204);// content not found
+            }
         }
     }
 }
