@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../app";
 import { Resource, ResourceType } from "../resource/resource";
 
-fdescribe("GET /", () => {
+describe("/resources", () => {
 
     it("should return resource", () => {
         return request(app)

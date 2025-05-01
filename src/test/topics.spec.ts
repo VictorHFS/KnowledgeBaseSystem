@@ -1,8 +1,9 @@
 import request from "supertest";
 import { app } from "../app";
 import { Topic } from "../topic/topic";
+import { TopicTree } from "../topic/topic-tree";
 
-describe("GET /", () => {
+describe("topics/", () => {
 
     it("should return topic", () => {
         return request(app)
@@ -246,6 +247,42 @@ describe("GET /", () => {
             .expect(204)
             .end(function (err, res) {
                 expect(err).toBeNull();
+                done();
+            });
+    });
+
+    it("should return topic tree", (done) => {
+        return request(app)
+            .get("/topics/tree/1")
+            .expect(200)
+            .end(function (err, res) {
+                var tree = res.body as TopicTree;
+                expect(tree.id).toEqual(1);
+                expect(tree.name).toEqual("Main Topic");
+                expect(tree.content).toEqual("Empty Content");
+                expect(tree.createdAt).not.toBeNull();
+                expect(tree.updatedAt).not.toBeNull();
+                expect(tree.version).not.toBeNull();
+                expect(tree.children.length).toEqual(1);
+
+                tree = tree.children[0];
+                expect(tree.id).toEqual(2);
+                expect(tree.name).toEqual("Secondary Topic");
+                expect(tree.content).toEqual("Empty Content");
+                expect(tree.createdAt).not.toBeNull();
+                expect(tree.updatedAt).not.toBeNull();
+                expect(tree.version).not.toBeNull();
+                expect(tree.children.length).toEqual(1);
+
+                tree = tree.children[0];
+                expect(tree.id).toEqual(3);
+                expect(tree.name).toEqual("Last Topic");
+                expect(tree.content).toEqual("Empty Content");
+                expect(tree.createdAt).not.toBeNull();
+                expect(tree.updatedAt).not.toBeNull();
+                expect(tree.version).not.toBeNull();
+                expect(tree.children.length).toEqual(0);
+
                 done();
             });
     });

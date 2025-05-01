@@ -3,7 +3,7 @@ import { app } from "../app";
 import { User } from "../user/user";
 import { Role } from "../user/role";
 
-describe("GET /", () => {
+describe("users/", () => {
 
     it("should return user", () => {
         return request(app)

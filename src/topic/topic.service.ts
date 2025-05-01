@@ -122,4 +122,25 @@ export class TopicService extends EntityService<Topic> {
         return topics[0];
     }
 
+    findAllLastVersion(): Topic[] {
+        var topicsFromLastUpdate: Map<number, Topic> = new Map();
+
+        for (let index = 0; index < this.Entitys.length; index++) {
+            const currTopic = this.Entitys[index];
+
+            if (topicsFromLastUpdate.has(currTopic.id)) {
+                var other = topicsFromLastUpdate.get(currTopic.id);
+
+                if (currTopic.version > other.version) {
+                    topicsFromLastUpdate.set(currTopic.id, currTopic);
+                }
+            } else {
+                topicsFromLastUpdate.set(currTopic.id, currTopic);
+            }
+        }
+
+        return Array.from(topicsFromLastUpdate.values());
+    }
+
 }
+
