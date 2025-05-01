@@ -1,7 +1,7 @@
 import { TopicService } from "../topic/topic.service";
 import { EntityService } from "../core/entity.service";
 import { Resource, ResourceType } from "./resource";
-import { StatusError } from "../topic/status.error";
+import { StatusError } from "../core/status.error";
 
 export class ResourceService extends EntityService<Resource> {
 

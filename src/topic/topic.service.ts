@@ -1,6 +1,6 @@
 import { EntityService } from "../core/entity.service";
 import { Topic } from "./topic";
-import { StatusError } from "./status.error";
+import { StatusError } from "../core/status.error";
 
 export class TopicService extends EntityService<Topic> {
 
