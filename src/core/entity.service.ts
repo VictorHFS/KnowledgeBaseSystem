@@ -1,4 +1,5 @@
 import { Entity } from "./entity";
+import { StatusError } from "./status.error";
 
 
 export class EntityService<T extends Entity> {
@@ -8,7 +9,7 @@ export class EntityService<T extends Entity> {
     find(id: number): T {
         var response = this.Entitys.find(e => e.id === id);
         if (!response) {
-            throw new Error('Entity not found (' + id + ')');
+            throw new StatusError(204, 'Entity not found (' + id + ')');
         }
 
         return response;
@@ -27,12 +28,12 @@ export class EntityService<T extends Entity> {
 
     update(Entity: T): T {
         if (Entity.id === null || Entity.id <= 0) {
-            throw new Error('Entity not found (' + Entity.id + ')');
+            throw new StatusError(204, 'Entity not found (' + Entity.id + ')');
         }
 
         const index = this.Entitys.findIndex(u => Entity.id === u.id);
         if (index < 0) {
-            throw new Error('Entity not found (' + Entity.id + ')');
+            throw new StatusError(204, 'Entity not found (' + Entity.id + ')');
         }
 
         this.Entitys[index] = Entity;
@@ -41,7 +42,7 @@ export class EntityService<T extends Entity> {
 
     delete(id: number) {
         if (!this.exists(id)) {
-            throw new Error('Entity not found (' + id + ')');
+            throw new StatusError(204, 'Entity not found (' + id + ')');
         }
         this.Entitys = this.Entitys.filter(u => u.id === id);
     }

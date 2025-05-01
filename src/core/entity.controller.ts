@@ -22,7 +22,7 @@ export class EntityController<T extends Entity> {
             } else {
 
                 res
-                    .sendStatus(204);// content not found
+                    .sendStatus(500);
             }
         }
     }
@@ -43,7 +43,7 @@ export class EntityController<T extends Entity> {
             } else {
 
                 res
-                    .sendStatus(204);// content not found
+                    .sendStatus(500);
             }
         }
     }
@@ -65,7 +65,7 @@ export class EntityController<T extends Entity> {
             } else {
 
                 res
-                    .sendStatus(204);// content not found
+                    .sendStatus(500);
             }
         }
     }
@@ -83,7 +83,7 @@ export class EntityController<T extends Entity> {
             } else {
 
                 res
-                    .sendStatus(204);// content not found
+                    .sendStatus(500);
             }
         }
     }
