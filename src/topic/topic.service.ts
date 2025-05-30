@@ -88,11 +88,11 @@ export class TopicService extends EntityService<Topic> {
     override update(Entity: Topic): Topic { // add new version
 
         if (Entity.id === null || Entity.id <= 0) {
-            throw new StatusError(204, 'Entity not found (' + Entity.id + ')');
+            throw new StatusError(404, 'Entity not found (' + Entity.id + ')');
         }
 
         if (!this.exists(Entity.id)) {
-            throw new StatusError(204, 'Entity not found (' + Entity.id + ')');
+            throw new StatusError(404, 'Entity not found (' + Entity.id + ')');
         }
 
         if (Entity.id == Entity.parentTopicId || this._checkParentingLoop(Entity)) {
@@ -117,7 +117,7 @@ export class TopicService extends EntityService<Topic> {
             .sort((a, b) => a.updatedAt.getTime() < b.updatedAt.getTime() ? 1 : -1);
 
         if (topics.length === 0) {
-            throw new StatusError(204, 'Entity not found (' + id + ')');
+            throw new StatusError(404, 'Entity not found (' + id + ')');
         }
         return topics[0];
     }

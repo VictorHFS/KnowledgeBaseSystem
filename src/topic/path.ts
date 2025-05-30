@@ -57,7 +57,7 @@ export class Path {
             while (!s.isEmpty())
                 _f.push(s.pop());
         }
-        return [..._f, intersection, ..._t];
+        return [..._f, intersection, ..._t].map(p => ({...p, children: undefined}));
 
     }
     private _intersectionPoint(arr1: TopicTree[], arr2: TopicTree[]): TopicTree {
